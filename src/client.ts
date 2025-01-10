@@ -4,7 +4,9 @@ import { Client, LocalAuth } from 'whatsapp-web.js';
 
 const createClient = (): Client => {
 	const client = new Client({
-		authStrategy: new LocalAuth(),
+		authStrategy: new LocalAuth({
+			dataPath: '/tmp/.wwebjs_auth',
+		}),
 		puppeteer: {
 			headless: true,
 			args: [
