@@ -28,10 +28,6 @@ const createClient = (): Client => {
 		}
 	});
 
-	client.on('qr', (qr) => {
-		qrcode.generate(qr, { small: true });
-	});
-
 	client.on('ready', () => {
 		console.log('Client is ready!');
 	});
@@ -40,8 +36,6 @@ const createClient = (): Client => {
 		console.log('Client was logged out', reason);
 		client.initialize();
 	});
-
-	client.initialize();
 
 	return client;
 };
