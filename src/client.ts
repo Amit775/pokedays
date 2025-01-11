@@ -3,6 +3,7 @@ import { executablePath } from 'puppeteer';
 import qrcode from 'qrcode-terminal';
 import { Client, RemoteAuth } from 'whatsapp-web.js';
 import { AwsS3Store } from 'wwebjs-aws-s3';
+import { QR } from './qr';
 
 const createClient = (): Client => {
 	const s3 = new S3Client({
@@ -50,6 +51,8 @@ const createClient = (): Client => {
 	});
 
 	client.on('qr', (qr) => {
+		QR.qr = qr;
+		console.log('QR RECEIVED', qr);
 		qrcode.generate(qr, { small: true });
 	});
 

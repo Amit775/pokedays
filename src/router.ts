@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, RequestHandler, Response } from 'express';
+import { QR } from './qr';
 import { send } from './sender';
 
 export const router = express.Router();
@@ -17,6 +18,10 @@ router.get(
 		const clientId = req.headers['client-id'] as string;
 
 		console.log(`request: ${index} ${name} ${shiny} ${clientId}`);
+
+		if (days === 'login') {
+			return res.setHeader('Content-Type', 'image/png').send(await QR.asImage());
+		}
 
 		if (!clientId) {
 			return res.status(400).json({ message: 'Client-ID header is required' });
