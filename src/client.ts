@@ -30,7 +30,7 @@ const createClient = (): Client => {
 
 	const client = new Client({
 		authStrategy: new RemoteAuth({
-			dataPath: '.auth',
+			dataPath: process.env.DATA_PATH,
 			store: store,
 			backupSyncIntervalMs: 600000,
 		}),
