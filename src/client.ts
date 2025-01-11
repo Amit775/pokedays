@@ -1,11 +1,11 @@
 import { executablePath } from 'puppeteer';
-import * as qrcode from 'qrcode-terminal';
+import qrcode from 'qrcode-terminal';
 import { Client, LocalAuth } from 'whatsapp-web.js';
 
 const createClient = (): Client => {
 	const client = new Client({
 		authStrategy: new LocalAuth({
-			dataPath: '/tmp/.wwebjs_auth',
+			dataPath: './node_modules/.wwebjs_auth',
 		}),
 		puppeteer: {
 			headless: true,
@@ -22,10 +22,8 @@ const createClient = (): Client => {
 		},
 	});
 
-	client.on('message', async (message) => {
-		if (message.body === 'debug') {
-			console.log(message);
-		}
+	client.on('qr', (qr) => {
+		qrcode.generate(qr, { small: true });
 	});
 
 	client.on('ready', () => {
@@ -37,7 +35,26 @@ const createClient = (): Client => {
 		client.initialize();
 	});
 
+	client.initialize();
+
 	return client;
 };
 
-export const client = createClient();
+let _client = createClient();
+
+const recreateClient = () => {
+	_client.destroy();
+	_client = createClient();
+	return _client;
+};
+
+export type Recreateble<T> = T & { recreate: () => Recreateble<T> };
+
+export const client = new Proxy({} as Recreateble<Client>, {
+	get(target, prop: keyof Recreateble<Client>) {
+		if (prop === 'recreate') {
+			return recreateClient;
+		}
+		return _client[prop];
+	},
+});
