@@ -1,9 +1,10 @@
-import { ErrorRequestHandler, default as express, RequestHandler } from 'express';
-import rateLimit from 'express-rate-limit';
-import { router } from './router';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
+import { ErrorRequestHandler, default as express, RequestHandler } from 'express';
+import rateLimit from 'express-rate-limit';
+import { router } from './router';
 
 const app = express();
 const PORT = process.env.PORT || 3000;

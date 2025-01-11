@@ -37,4 +37,5 @@ lerna-debug.log*
 
 .wwebjs_*/
 .vercel/
+.auth/
 .env

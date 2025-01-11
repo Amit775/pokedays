@@ -16,12 +16,17 @@ router.get(
 		const [index, name] = days.split('-');
 		const clientId = req.headers['client-id'] as string;
 
+		console.log(`request: ${index} ${name} ${shiny} ${clientId}`);
+
 		if (!clientId) {
 			return res.status(400).json({ message: 'Client-ID header is required' });
 		}
 
 		return send(clientId, index, name, shiny === '1')
-			.then((response) => res.json({ message: response }))
+			.then((response) => {
+				console.log(`response: ${response}`);
+				res.json({ message: response });
+			})
 			.catch((error) => {
 				console.error('Failed to send message:', error);
 				return res.status(500).json({ message: 'Failed to send message' });
