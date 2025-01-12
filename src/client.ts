@@ -31,6 +31,7 @@ const createClient = async (): Promise<Client> => {
 		deleteObjectCommand,
 	});
 
+	console.log('Creating client...');
 	const chromePath = (await chromium.executablePath) ?? executablePath();
 
 	const browser = await puppeteer.launch({
@@ -49,6 +50,8 @@ const createClient = async (): Promise<Client> => {
 		headless: true,
 	});
 
+	console.log('Browser launched');
+
 	const client = new Client({
 		authStrategy: new RemoteAuth({
 			dataPath: process.env.DATA_PATH,
@@ -57,6 +60,8 @@ const createClient = async (): Promise<Client> => {
 		}),
 		puppeteer: { browserWSEndpoint: browser.wsEndpoint() },
 	});
+
+	console.log('Client created');
 
 	client.on('qr', (qr) => {
 		QR.qr = qr;
@@ -77,7 +82,9 @@ const createClient = async (): Promise<Client> => {
 		client.initialize();
 	});
 
-	client.initialize();
+	await client.initialize();
+
+	console.log('Client initialized');
 
 	return client;
 };
