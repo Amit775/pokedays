@@ -1,6 +1,5 @@
 import { DeleteObjectCommand, GetObjectCommand, HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import chromium from 'chrome-aws-lambda';
-import { executablePath } from 'puppeteer';
 import puppeteer from 'puppeteer-core';
 import qrcode from 'qrcode-terminal';
 import { Client, RemoteAuth } from 'whatsapp-web.js';
@@ -32,7 +31,10 @@ const createClient = async (): Promise<Client> => {
 	});
 
 	console.log('Creating client...');
-	const chromePath = (await chromium.executablePath) ?? executablePath();
+	const chromePath = await Promise.race([
+		chromium.executablePath,
+		new Promise<string>((_, reject) => setTimeout(() => reject(new Error('Timeout resolving executablePath')), 5000)),
+	]).catch(() => '/usr/bin/chromium-browser'); // Fallback path
 
 	console.log('Chrome path', chromePath);
 
