@@ -43,7 +43,7 @@ const retrySendMessage = async (id: string, media: MessageMedia, message: string
 			console.warn(`Attempt ${attempt} failed. Retrying...`);
 			if (typeof (error as { message: string }).message === 'string' && error.message.includes('Session closed')) {
 				console.warn('Client session closed. Reinitializing client...');
-				client.recreate();
+				await client.recreate();
 				await waitForClientReady();
 			}
 		}

@@ -1,11 +1,13 @@
 import { DeleteObjectCommand, GetObjectCommand, HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import chromium from 'chrome-aws-lambda';
 import { executablePath } from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 import qrcode from 'qrcode-terminal';
 import { Client, RemoteAuth } from 'whatsapp-web.js';
 import { AwsS3Store } from 'wwebjs-aws-s3';
 import { QR } from './qr';
 
-const createClient = (): Client => {
+const createClient = async (): Promise<Client> => {
 	const s3 = new S3Client({
 		region: process.env.AWS_REGION ?? 'eu-central-1',
 		credentials: {
@@ -29,25 +31,31 @@ const createClient = (): Client => {
 		deleteObjectCommand,
 	});
 
+	const chromePath = (await chromium.executablePath) ?? executablePath();
+
+	const browser = await puppeteer.launch({
+		args: [
+			'--no-sandbox',
+			'--disable-setuid-sandbox',
+			'--disable-dev-shm-usage',
+			'--disable-accelerated-2d-canvas',
+			'--no-first-run',
+			'--no-zygote',
+			'--disable-gpu',
+			...chromium.args,
+		],
+		defaultViewport: chromium.defaultViewport,
+		executablePath: chromePath,
+		headless: true,
+	});
+
 	const client = new Client({
 		authStrategy: new RemoteAuth({
 			dataPath: process.env.DATA_PATH,
 			store: store,
 			backupSyncIntervalMs: 600000,
 		}),
-		puppeteer: {
-			headless: true,
-			args: [
-				'--no-sandbox',
-				'--disable-setuid-sandbox',
-				'--disable-dev-shm-usage',
-				'--disable-accelerated-2d-canvas',
-				'--no-first-run',
-				'--no-zygote',
-				'--disable-gpu',
-			],
-			executablePath: executablePath(),
-		},
+		puppeteer: { browserWSEndpoint: browser.wsEndpoint() },
 	});
 
 	client.on('qr', (qr) => {
@@ -74,15 +82,19 @@ const createClient = (): Client => {
 	return client;
 };
 
-let _client = createClient();
+let _client: Client;
 
-const recreateClient = () => {
-	_client.destroy();
-	_client = createClient();
+const recreateClient = async () => {
+	_client?.destroy();
+	_client = await createClient();
 	return _client;
 };
 
-export type Recreateble<T> = T & { recreate: () => Recreateble<T> };
+(async () => {
+	_client = await recreateClient();
+})();
+
+export type Recreateble<T> = T & { recreate: () => Promise<Recreateble<T>> };
 
 export const client = new Proxy({} as Recreateble<Client>, {
 	get(target, prop: keyof Recreateble<Client>) {
