@@ -34,6 +34,10 @@ const createClient = async (): Promise<Client> => {
 	console.log('Creating client...');
 	const chromePath = (await chromium.executablePath) ?? executablePath();
 
+	console.log('Chrome path', chromePath);
+
+	console.log('chromium args', chromium.args);
+
 	const browser = await puppeteer.launch({
 		args: [
 			'--no-sandbox',
