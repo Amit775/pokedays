@@ -1573,6 +1573,13 @@ chownr@^1.1.1:
   resolved "https://registry.npmjs.org/chownr/-/chownr-1.1.4.tgz"
   integrity sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==
 
+chrome-aws-lambda@^10.1.0:
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/chrome-aws-lambda/-/chrome-aws-lambda-10.1.0.tgz#ac43b4cdfc1fbb2275c62effada560858099501e"
+  integrity sha512-NZQVf+J4kqG4sVhRm3WNmOfzY0OtTSm+S8rg77pwePa9RCYHzhnzRs8YvNI6L9tALIW6RpmefWiPURt3vURXcw==
+  dependencies:
+    lambdafs "^2.0.3"
+
 chromium-bidi@0.11.0:
   version "0.11.0"
   resolved "https://registry.npmjs.org/chromium-bidi/-/chromium-bidi-0.11.0.tgz"
@@ -2240,6 +2247,13 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
+lambdafs@^2.0.3:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/lambdafs/-/lambdafs-2.1.1.tgz#4bf8d3037b6c61bbb4a22ab05c73ee47964c25ed"
+  integrity sha512-x5k8JcoJWkWLvCVBzrl4pzvkEHSgSBqFjg3Dpsc4AcTMq7oUMym4cL/gRTZ6VM4mUMY+M0dIbQ+V1c1tsqqanQ==
+  dependencies:
+    tar-fs "^2.1.1"
+
 lazystream@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/lazystream/-/lazystream-1.0.1.tgz"
@@ -2611,6 +2625,18 @@ puppeteer-core@24.0.0:
     typed-query-selector "^2.12.0"
     ws "^8.18.0"
 
+puppeteer-core@^24.0.0:
+  version "24.0.0"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-24.0.0.tgz#a9671518ac4ed0998db153e72c5dbe09170bba40"
+  integrity sha512-bHVXmnkYnMVSbsD+pJGt8fmGZLaVYOAieVnJcDxtLIVTMq0s5RfYdzN4xVlFoBQ3T06/sPkXxca3VLVfaqLxzg==
+  dependencies:
+    "@puppeteer/browsers" "2.7.0"
+    chromium-bidi "0.11.0"
+    debug "^4.4.0"
+    devtools-protocol "0.0.1367902"
+    typed-query-selector "^2.12.0"
+    ws "^8.18.0"
+
 puppeteer@^18.2.1:
   version "18.2.1"
   resolved "https://registry.npmjs.org/puppeteer/-/puppeteer-18.2.1.tgz"
@@ -2919,17 +2945,7 @@ strnum@^1.0.5:
   resolved "https://registry.yarnpkg.com/strnum/-/strnum-1.0.5.tgz#5c4e829fe15ad4ff0d20c3db5ac97b73c9b072db"
   integrity sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==
 
-tar-fs@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.npmjs.org/tar-fs/-/tar-fs-2.1.1.tgz"
-  integrity sha512-V0r2Y9scmbDRLCNex/+hYzvp/zyYjvFbHPNgVTKfQvVrb6guiE/fxP+XblDNR011utopbkex2nM4dHNV6GDsng==
-  dependencies:
-    chownr "^1.1.1"
-    mkdirp-classic "^0.5.2"
-    pump "^3.0.0"
-    tar-stream "^2.1.4"
-
-tar-fs@^3.0.6:
+tar-fs@*, tar-fs@^3.0.6:
   version "3.0.6"
   resolved "https://registry.npmjs.org/tar-fs/-/tar-fs-3.0.6.tgz"
   integrity sha512-iokBDQQkUyeXhgPYaZxmczGPhnhXZ0CmrqI+MOb/WFGS9DW5wnfrLgtjUJBvz50vQ3qfRwJ62QVoCFu8mPVu5w==
@@ -2939,6 +2955,16 @@ tar-fs@^3.0.6:
   optionalDependencies:
     bare-fs "^2.1.1"
     bare-path "^2.1.0"
+
+tar-fs@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/tar-fs/-/tar-fs-2.1.1.tgz"
+  integrity sha512-V0r2Y9scmbDRLCNex/+hYzvp/zyYjvFbHPNgVTKfQvVrb6guiE/fxP+XblDNR011utopbkex2nM4dHNV6GDsng==
+  dependencies:
+    chownr "^1.1.1"
+    mkdirp-classic "^0.5.2"
+    pump "^3.0.0"
+    tar-stream "^2.1.4"
 
 tar-stream@^2.1.4, tar-stream@^2.2.0:
   version "2.2.0"
