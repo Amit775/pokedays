@@ -31,10 +31,7 @@ const createClient = async (): Promise<Client> => {
 	});
 
 	console.log('Creating client...');
-	const chromePath = await Promise.race([
-		chromium.executablePath,
-		new Promise<string>((_, reject) => setTimeout(() => reject(new Error('Timeout resolving executablePath')), 5000)),
-	]).catch(() => chromium.executablePath); // Fallback path
+	const chromePath = await chromium.executablePath;
 
 	console.log('Chrome path', chromePath);
 
