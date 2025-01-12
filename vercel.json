@@ -11,5 +11,11 @@
 			"src": "/(.*)",
 			"dest": "src/app.ts"
 		}
-	]
+	],
+	"functions": {
+		"src/app.ts": {
+			"memory": 512,
+			"maxDuration": 30
+		}
+	}
 }
