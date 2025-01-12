@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, RequestHandler, Response } from 'express';
 import { QR } from './qr';
 import { send } from './sender';
+import { client } from './client';
 
 export const router = express.Router();
 
@@ -12,15 +13,15 @@ router.get(
 	'/:days',
 	asyncHandler(async (req, res) => {
 		const { days } = req.params;
-		const { shiny } = req.query;
+		const { shiny, login } = req.query;
 
 		const [index, name] = days.split('-');
 		const clientId = req.headers['client-id'] as string;
 
 		console.log(`request: ${index} ${name} ${shiny} ${clientId}`);
 
-		if (days === 'login') {
-			return res.setHeader('Content-Type', 'image/png').send(await QR.asImage());
+		if (login === 'true') {
+			return client.info ? res.json(client.info) : res.setHeader('Content-Type', 'image/png').send(await QR.asImage());
 		}
 
 		if (!clientId) {
